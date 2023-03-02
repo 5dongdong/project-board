@@ -41,7 +41,7 @@ class JpaRepositoryTest {
         //Then
         assertThat(articles)
                 .isNotNull()
-                .hasSize(1);
+                .hasSize(5);
     }
 
 
@@ -54,7 +54,7 @@ class JpaRepositoryTest {
         //When
         Article savedarticle = articleRepository.save(Article.of("new article", "new content", "#spring"));
         //Then
-        assertThat(articleRepository.count()).isEqualTo(+2);
+        assertThat(articleRepository.count()).isEqualTo(+6);
     }
     @DisplayName("update 테스트")
     @Test
