@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>게시판 페이지</title>
@@ -7,10 +7,7 @@
 
 <body>
 
-    <header>
-        헤더 삽입
-        <hr>
-    </header>
+    <header th:replace="header :: header"></header>
 
     <main>
         <form>
@@ -26,6 +23,7 @@
             <input id = "search-value" type="search" placeholder="검색어" name = "search-value">
             <button type="submit"> 검색 </button>
         </form>
+
         <table>
             <thead>
              <tr>
@@ -71,11 +69,6 @@
         </nav>
     </main>
 
-    <footer>
-        <hr>
-        footer 삽입
-    </footer>
-
-
+    <footer th:replace="footer :: footer"></footer>
 </body>
 </html>
