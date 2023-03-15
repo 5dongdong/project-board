@@ -2,8 +2,11 @@ package com.fastcampus.projectboard.repository;
 
 import com.fastcampus.projectboard.domain.Article;
 import com.fastcampus.projectboard.domain.QArticle;
-import com.querydsl.core.types.dsl.SimpleExpression;
+import com.fastcampus.projectboard.repository.querydsl.ArticleRepositoryCustom;
+import com.querydsl.core.types.dsl.DateExpression;
 import com.querydsl.core.types.dsl.StringExpression;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -13,16 +16,27 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface ArticleRepository extends
         JpaRepository<Article, Long>,
+        ArticleRepositoryCustom,
         QuerydslPredicateExecutor<Article>,
         QuerydslBinderCustomizer<QArticle>{
+
+    Page<Article> findByTitleContaining(String title, Pageable pageable);
+    Page<Article> findByContentContaining(String content, Pageable pageable);
+    Page<Article> findByUserAccount_UserIdContaining(String UserId, Pageable pageable);
+    Page<Article> findByUserAccount_NicknameContaining(String NickName, Pageable pageable);
+    //Page<Article> findByHashtag(String hashtag, Pageable pageable);
+    //Page<Article> findByHashtags(String hashtag, Pageable pageable);
+
+    void deleteByIdAndUserAccount_UserId(Long articleId, String userid);
+
     @Override
     default void customize(QuerydslBindings bindings, QArticle root) {
         bindings.excludeUnlistedProperties(true);
-        bindings.including(root.title, root.content ,root.hashtag, root.createdAt, root.createdBy);
+        bindings.including(root.title, root.content ,root.hashtags, root.createdAt, root.createdBy);
         bindings.bind(root.title).first(StringExpression::containsIgnoreCase); // like '%${v}%'
-        bindings.bind(root.content).first(StringExpression::containsIgnoreCase); // like '%${v}%'
-        bindings.bind(root.hashtag).first(StringExpression::containsIgnoreCase); // like '%${v}%'
-        bindings.bind(root.createdAt).first((SimpleExpression::eq)); // like '%${v}%'
+        bindings.bind(root.content).first(StringExpression::containsIgnoreCase); // like '%${v}%''
+        //bindings.bind(root.hashtags).first(StringExpression::containsIgnoreCase);
+        //bindings.bind(root.createdAt).first(DateExpression::eq); // like '%${v}%'
         bindings.bind(root.createdBy).first(StringExpression::containsIgnoreCase); // like '%${v}%'
     }
 
