@@ -35,7 +35,7 @@ public record ArticleWithCommentsResponse(
                 dto.id(),
                 dto.title(),
                 dto.content(),
-                dto.hashtagDtos().stream()
+                dto.hashtagDto().stream()
                         .map(HashtagDto::hashtagName)
                         .collect(Collectors.toUnmodifiableSet())
                 ,
@@ -43,7 +43,7 @@ public record ArticleWithCommentsResponse(
                 dto.userAccountDto().email(),
                 nickname,
                 dto.userAccountDto().userId(),
-                organizeChildComments(dto.articleCommentDtos())
+                organizeChildComments(dto.articleCommentDto())
         );
     }
 
